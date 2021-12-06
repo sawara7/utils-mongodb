@@ -17,6 +17,7 @@
     "url": "https://github.com/sawara7/mongodb-utils/issues"
   },
   "homepage": "https://github.com/sawara7/mongodb-utils#readme",
+  "bundleDependencies": false,
   "dependencies": {
     "@types/mongodb": "^3.6.20",
     "mongodb": "^3.6.0"
