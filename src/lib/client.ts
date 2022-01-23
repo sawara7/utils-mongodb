@@ -80,3 +80,9 @@ export class MongodbManagerClass {
         return result;
     }
 }
+
+export async function getMongoDBClient(db: string): Promise<MongodbManagerClass> {
+    const mongo = new MongodbManagerClass(db)
+    await mongo.connect()
+    return mongo
+}

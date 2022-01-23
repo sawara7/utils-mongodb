@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.getMongoDBClient = exports.MongodbManagerClass = void 0;
 const mongodb_1 = require("mongodb");
 class MongodbManagerClass {
     constructor(db, url = "mongodb://localhost:27017/") {
@@ -102,3 +103,11 @@ class MongodbManagerClass {
     }
 }
 exports.MongodbManagerClass = MongodbManagerClass;
+function getMongoDBClient(db) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const mongo = new MongodbManagerClass(db);
+        yield mongo.connect();
+        return mongo;
+    });
+}
+exports.getMongoDBClient = getMongoDBClient;

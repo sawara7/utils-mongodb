@@ -16,3 +16,4 @@ export declare class MongodbManagerClass {
     watch(collection: string, array: mongoDocumentType[], callback: callbackMongoDocument): Promise<void>;
     isExistDocument(collection: string, doc: mongoDocumentType): Promise<boolean>;
 }
+export declare function getMongoDBClient(db: string): Promise<MongodbManagerClass>;
