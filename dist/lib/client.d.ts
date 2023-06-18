@@ -1,5 +1,5 @@
-export declare type mongoDocumentType = any;
-export declare type callbackMongoDocument = (doc: mongoDocumentType) => void;
+export type mongoDocumentType = any;
+export type callbackMongoDocument = (doc: mongoDocumentType) => void;
 export declare class MongodbManagerClass {
     private db;
     private url;

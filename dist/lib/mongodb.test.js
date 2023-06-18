@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const client_1 = require("./client");
-const mongo = new client_1.MongodbManagerClass('fxbot');
+const mongo = new client_1.MongodbManagerClass('bitbank');
 const sampleset = () => __awaiter(void 0, void 0, void 0, function* () {
     yield mongo.insert('sample', { abcde: 1234 });
     yield mongo.update('sample', { abcde: 1234 }, { abcde: 1 });
