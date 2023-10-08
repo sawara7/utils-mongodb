@@ -1,65 +1,188 @@
 import {
+    MongoAPIError,
     MongoClient
-} from "mongodb";
-export type mongoDocumentType = any;
-export type callbackMongoDocument = (doc: mongoDocumentType) => void;
+} from "mongodb"
+
+export type mongoDocumentType = any
+export type callbackMongoDocument = (doc: mongoDocumentType) => void
+export type mongoResult<T> = {
+    result: boolean
+    data?: T
+}
+
 export class MongodbManagerClass {
     private client: MongoClient;
-    constructor(private db: string, private url: string = "mongodb://localhost:27017/"){
-        const connectOption = {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
+
+    /**
+     * constructor
+     */
+    constructor(private dbName: string, private url: string = "mongodb://localhost:27017/"){
+        this.client = new MongoClient(this.url)
+        this.client.addListener
+    }
+
+    /**
+     * connect
+     */
+    async connect(): Promise<boolean> {
+        let res = false
+        try {
+            await this.client.connect()
+            res = true
+        } catch(e) {
+            if (e instanceof Error) {
+                console.log(e.message)
+            }
+            res = false
         }
-        this.client = new MongoClient(this.url, connectOption);
+        return res
     }
 
-    async connect(): Promise<boolean>{
-        await this.client.connect();
-        return this.client.isConnected();
-    }
-
+    /**
+     * close
+     */
     async close(): Promise<boolean>{
-        await this.client.close();
-        return !this.client.isConnected();
-    }
-
-    async insert(collection: string, docs: mongoDocumentType): Promise<string>{
-        const res = await this.client.db(this.db).collection(collection).insertOne(docs);
-        return res.insertedId;
-    }
-
-    async insertAny(collection: string, data: mongoDocumentType): Promise<boolean>{
-        const res = await this.client.db(this.db).collection(collection).insertOne(data);
-        return res.result.ok === 1;
-    }
-
-    async insertBulk(collection: string, data: mongoDocumentType[]): Promise<boolean>{
-        const res = await this.client.db(this.db).collection(collection).insertMany(data);
-        return res.result.ok === 1;
-    }
-
-    async update(collection: string, filter: mongoDocumentType, data: mongoDocumentType): Promise<boolean>{
-        const res = await this.client.db(this.db).collection(collection).updateOne(filter, {$set:data});
-        return res.result.ok === 1;
-    }
-
-    async upsert(collection: string, filter: mongoDocumentType, data: mongoDocumentType): Promise<boolean>{
-        const res = await this.client.db(this.db).collection(collection).update(filter, data, {upsert: true});
-        return res.result.ok === 1;
-    }
-
-    async find(collection: string, filter: mongoDocumentType = {}): Promise<mongoDocumentType[]>{
-        const result: mongoDocumentType[] = [];
-        const res = await this.client.db(this.db).collection(collection).find(filter).toArray();
-
-        for (const val of res){
-            result.push(val as mongoDocumentType);
+        let res = false
+        try {
+            await this.client.close()
+        } catch(e) {
+            if (e instanceof Error) {
+                console.log(e.message)
+            }
+            res = false
         }
-        return result;
+        return res
     }
 
-    async watch(collection: string, array: mongoDocumentType[], callback: callbackMongoDocument): Promise<void>{
-        const res = await this.client.db(this.db).collection(collection).watch(array);
+    /**
+     * insert
+     */
+    async insert(collection: string, docs: mongoDocumentType): Promise<mongoResult<string>> {
+        try {
+            const res = await this.client.db(this.dbName).collection(collection).insertOne(docs)
+            return {
+                result: true,
+                data: res.insertedId.toString()
+            }
+        } catch(e) {
+            if (e instanceof MongoAPIError) {
+                console.log(e.message)
+            }
+            return {
+                result: false
+            }
+        }
+    }
+
+    /**
+     * insertAny
+     */
+    async insertAny(collection: string, data: mongoDocumentType): Promise<mongoResult<boolean>> {
+        try {
+            const res = await this.client.db(this.dbName).collection(collection).insertOne(data)
+            return {
+                result: true,
+                data: res.acknowledged
+            }
+        } catch(e) {
+            if (e instanceof MongoAPIError) {
+                console.log(e.message)
+            }
+            return {
+                result: false
+            }
+        }
+    }
+
+    /**
+     * insertBulk
+     */
+    async insertBulk(collection: string, data: mongoDocumentType[]): Promise<mongoResult<boolean>> {
+        try {
+            const res = await this.client.db(this.dbName).collection(collection).insertMany(data)
+            return {
+                result: true,
+                data: res.acknowledged
+            }
+        } catch(e) {
+            if (e instanceof MongoAPIError) {
+                console.log(e.message)
+            }
+            return {
+                result: false
+            }
+        }
+    }
+
+    /**
+     * update
+     */
+    async update(collection: string, filter: mongoDocumentType, data: mongoDocumentType): Promise<mongoResult<boolean>> {
+        try {
+            const res = await this.client.db(this.dbName).collection(collection).updateOne(filter, {$set:data})
+            return {
+                result: true,
+                data: res.acknowledged
+            }
+        } catch(e) {
+            if (e instanceof MongoAPIError) {
+                console.log(e.message)
+            }
+            return {
+                result: false
+            }
+        }
+    }
+
+    /**
+     * upsert
+     */
+    async upsert(collection: string, filter: mongoDocumentType, data: mongoDocumentType): Promise<mongoResult<boolean>> {
+        try {
+            const res = await this.client.db(this.dbName).collection(collection).updateOne(filter, data, {upsert: true})
+            return {
+                result: true,
+                data: res.acknowledged
+            }
+        } catch(e) {
+            if (e instanceof MongoAPIError) {
+                console.log(e.message)
+            }
+            return {
+                result: false
+            }
+        }
+    }
+
+    /**
+     * find
+     */
+    async find(collection: string, filter: mongoDocumentType = {}): Promise<mongoResult<mongoDocumentType[]>> {
+        const result: mongoDocumentType[] = []
+        try {
+            const res = await this.client.db(this.dbName).collection(collection).find(filter).toArray()
+            for (const val of res){
+                result.push(val as mongoDocumentType);
+            }
+            return {
+                result: true,
+                data: result
+            }
+        } catch(e) {
+            if (e instanceof MongoAPIError) {
+                console.log(e.message)
+            }
+            return {
+                result: false
+            }
+        }
+    }
+
+    /**
+     * watch
+     */
+    async watch(collection: string, array: mongoDocumentType[], callback: callbackMongoDocument): Promise<void> {
+        const res = await this.client.db(this.dbName).collection(collection).watch(array);
         const baseCallback = (value: any) => {
             const response = value as mongoDocumentType;
             if(!response){return};
@@ -74,13 +197,31 @@ export class MongodbManagerClass {
         res.on("change", baseCallback);
     }
 
-    async isExistDocument(collection: string, doc:mongoDocumentType): Promise<boolean>{
-        const res = await this.client.db(this.db).collection(collection).findOne(doc);
-        const result = res? true: false;
-        return result;
+    /**
+     * isExistDocument
+     */
+    async isExistDocument(collection: string, doc:mongoDocumentType): Promise<mongoResult<boolean>> {
+        try {
+            const res = await this.client.db(this.dbName).collection(collection).findOne(doc)
+            const result = res? true: false
+            return {
+                result: true,
+                data: result
+            }
+        } catch(e) {
+            if (e instanceof MongoAPIError) {
+                console.log(e.message)
+            }
+            return {
+                result: false
+            }
+        }
     }
 }
 
+/**
+* getMongoDBClient
+*/
 export async function getMongoDBClient(db: string): Promise<MongodbManagerClass> {
     const mongo = new MongodbManagerClass(db)
     await mongo.connect()

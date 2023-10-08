@@ -1,29 +1,23 @@
 {
-  "name": "mongodb-utils",
-  "version": "0.0.1",
-  "description": "mongodb utils",
+  "name": "utils-mongodb",
+  "version": "0.0.2",
   "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/sawara7/mongodb-utils.git"
+    "install-rimraf": "npm install --save-dev rimraf",
+    "cleanup": "rimraf package-lock.json && rimraf dist && rimraf node_modules",
+    "build": "npm run install-rimraf && npm run cleanup && npm install && tsc",
+    "tsc": "tsc"
   },
   "author": "sawara7",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/sawara7/mongodb-utils/issues"
-  },
-  "homepage": "https://github.com/sawara7/mongodb-utils#readme",
-  "bundleDependencies": false,
-  "dependencies": {
-    "mongodb": "^3.6.0"
-  },
+  "license": "MIT",
+  "bundleDependencies": [],
   "devDependencies": {
-    "@types/mongodb": "^3.6.20",
-    "@types/node": "^14.17.9",
-    "typescript": "^4.3.5"
+    "@types/node": "^20.8.3",
+    "rimraf": "^5.0.5",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "mongodb": "^6.1.0"
   }
 }

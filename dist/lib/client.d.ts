@@ -1,19 +1,59 @@
 export type mongoDocumentType = any;
 export type callbackMongoDocument = (doc: mongoDocumentType) => void;
+export type mongoResult<T> = {
+    result: boolean;
+    data?: T;
+};
 export declare class MongodbManagerClass {
-    private db;
+    private dbName;
     private url;
     private client;
-    constructor(db: string, url?: string);
+    /**
+     * constructor
+     */
+    constructor(dbName: string, url?: string);
+    /**
+     * connect
+     */
     connect(): Promise<boolean>;
+    /**
+     * close
+     */
     close(): Promise<boolean>;
-    insert(collection: string, docs: mongoDocumentType): Promise<string>;
-    insertAny(collection: string, data: mongoDocumentType): Promise<boolean>;
-    insertBulk(collection: string, data: mongoDocumentType[]): Promise<boolean>;
-    update(collection: string, filter: mongoDocumentType, data: mongoDocumentType): Promise<boolean>;
-    upsert(collection: string, filter: mongoDocumentType, data: mongoDocumentType): Promise<boolean>;
-    find(collection: string, filter?: mongoDocumentType): Promise<mongoDocumentType[]>;
+    /**
+     * insert
+     */
+    insert(collection: string, docs: mongoDocumentType): Promise<mongoResult<string>>;
+    /**
+     * insertAny
+     */
+    insertAny(collection: string, data: mongoDocumentType): Promise<mongoResult<boolean>>;
+    /**
+     * insertBulk
+     */
+    insertBulk(collection: string, data: mongoDocumentType[]): Promise<mongoResult<boolean>>;
+    /**
+     * update
+     */
+    update(collection: string, filter: mongoDocumentType, data: mongoDocumentType): Promise<mongoResult<boolean>>;
+    /**
+     * upsert
+     */
+    upsert(collection: string, filter: mongoDocumentType, data: mongoDocumentType): Promise<mongoResult<boolean>>;
+    /**
+     * find
+     */
+    find(collection: string, filter?: mongoDocumentType): Promise<mongoResult<mongoDocumentType[]>>;
+    /**
+     * watch
+     */
     watch(collection: string, array: mongoDocumentType[], callback: callbackMongoDocument): Promise<void>;
-    isExistDocument(collection: string, doc: mongoDocumentType): Promise<boolean>;
+    /**
+     * isExistDocument
+     */
+    isExistDocument(collection: string, doc: mongoDocumentType): Promise<mongoResult<boolean>>;
 }
+/**
+* getMongoDBClient
+*/
 export declare function getMongoDBClient(db: string): Promise<MongodbManagerClass>;

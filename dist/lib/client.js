@@ -12,70 +12,194 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getMongoDBClient = exports.MongodbManagerClass = void 0;
 const mongodb_1 = require("mongodb");
 class MongodbManagerClass {
-    constructor(db, url = "mongodb://localhost:27017/") {
-        this.db = db;
+    /**
+     * constructor
+     */
+    constructor(dbName, url = "mongodb://localhost:27017/") {
+        this.dbName = dbName;
         this.url = url;
-        const connectOption = {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        };
-        this.client = new mongodb_1.MongoClient(this.url, connectOption);
+        this.client = new mongodb_1.MongoClient(this.url);
+        this.client.addListener;
     }
+    /**
+     * connect
+     */
     connect() {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.client.connect();
-            return this.client.isConnected();
+            let res = false;
+            try {
+                yield this.client.connect();
+                res = true;
+            }
+            catch (e) {
+                if (e instanceof Error) {
+                    console.log(e.message);
+                }
+                res = false;
+            }
+            return res;
         });
     }
+    /**
+     * close
+     */
     close() {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.client.close();
-            return !this.client.isConnected();
+            let res = false;
+            try {
+                yield this.client.close();
+            }
+            catch (e) {
+                if (e instanceof Error) {
+                    console.log(e.message);
+                }
+                res = false;
+            }
+            return res;
         });
     }
+    /**
+     * insert
+     */
     insert(collection, docs) {
         return __awaiter(this, void 0, void 0, function* () {
-            const res = yield this.client.db(this.db).collection(collection).insertOne(docs);
-            return res.insertedId;
+            try {
+                const res = yield this.client.db(this.dbName).collection(collection).insertOne(docs);
+                return {
+                    result: true,
+                    data: res.insertedId.toString()
+                };
+            }
+            catch (e) {
+                if (e instanceof mongodb_1.MongoAPIError) {
+                    console.log(e.message);
+                }
+                return {
+                    result: false
+                };
+            }
         });
     }
+    /**
+     * insertAny
+     */
     insertAny(collection, data) {
         return __awaiter(this, void 0, void 0, function* () {
-            const res = yield this.client.db(this.db).collection(collection).insertOne(data);
-            return res.result.ok === 1;
+            try {
+                const res = yield this.client.db(this.dbName).collection(collection).insertOne(data);
+                return {
+                    result: true,
+                    data: res.acknowledged
+                };
+            }
+            catch (e) {
+                if (e instanceof mongodb_1.MongoAPIError) {
+                    console.log(e.message);
+                }
+                return {
+                    result: false
+                };
+            }
         });
     }
+    /**
+     * insertBulk
+     */
     insertBulk(collection, data) {
         return __awaiter(this, void 0, void 0, function* () {
-            const res = yield this.client.db(this.db).collection(collection).insertMany(data);
-            return res.result.ok === 1;
+            try {
+                const res = yield this.client.db(this.dbName).collection(collection).insertMany(data);
+                return {
+                    result: true,
+                    data: res.acknowledged
+                };
+            }
+            catch (e) {
+                if (e instanceof mongodb_1.MongoAPIError) {
+                    console.log(e.message);
+                }
+                return {
+                    result: false
+                };
+            }
         });
     }
+    /**
+     * update
+     */
     update(collection, filter, data) {
         return __awaiter(this, void 0, void 0, function* () {
-            const res = yield this.client.db(this.db).collection(collection).updateOne(filter, { $set: data });
-            return res.result.ok === 1;
+            try {
+                const res = yield this.client.db(this.dbName).collection(collection).updateOne(filter, { $set: data });
+                return {
+                    result: true,
+                    data: res.acknowledged
+                };
+            }
+            catch (e) {
+                if (e instanceof mongodb_1.MongoAPIError) {
+                    console.log(e.message);
+                }
+                return {
+                    result: false
+                };
+            }
         });
     }
+    /**
+     * upsert
+     */
     upsert(collection, filter, data) {
         return __awaiter(this, void 0, void 0, function* () {
-            const res = yield this.client.db(this.db).collection(collection).update(filter, data, { upsert: true });
-            return res.result.ok === 1;
+            try {
+                const res = yield this.client.db(this.dbName).collection(collection).updateOne(filter, data, { upsert: true });
+                return {
+                    result: true,
+                    data: res.acknowledged
+                };
+            }
+            catch (e) {
+                if (e instanceof mongodb_1.MongoAPIError) {
+                    console.log(e.message);
+                }
+                return {
+                    result: false
+                };
+            }
         });
     }
+    /**
+     * find
+     */
     find(collection, filter = {}) {
         return __awaiter(this, void 0, void 0, function* () {
             const result = [];
-            const res = yield this.client.db(this.db).collection(collection).find(filter).toArray();
-            for (const val of res) {
-                result.push(val);
+            try {
+                const res = yield this.client.db(this.dbName).collection(collection).find(filter).toArray();
+                for (const val of res) {
+                    result.push(val);
+                }
+                return {
+                    result: true,
+                    data: result
+                };
             }
-            return result;
+            catch (e) {
+                if (e instanceof mongodb_1.MongoAPIError) {
+                    console.log(e.message);
+                }
+                return {
+                    result: false
+                };
+            }
         });
     }
+    /**
+     * watch
+     */
     watch(collection, array, callback) {
         return __awaiter(this, void 0, void 0, function* () {
-            const res = yield this.client.db(this.db).collection(collection).watch(array);
+            const res = yield this.client.db(this.dbName).collection(collection).watch(array);
             const baseCallback = (value) => {
                 const response = value;
                 if (!response) {
@@ -94,15 +218,34 @@ class MongodbManagerClass {
             res.on("change", baseCallback);
         });
     }
+    /**
+     * isExistDocument
+     */
     isExistDocument(collection, doc) {
         return __awaiter(this, void 0, void 0, function* () {
-            const res = yield this.client.db(this.db).collection(collection).findOne(doc);
-            const result = res ? true : false;
-            return result;
+            try {
+                const res = yield this.client.db(this.dbName).collection(collection).findOne(doc);
+                const result = res ? true : false;
+                return {
+                    result: true,
+                    data: result
+                };
+            }
+            catch (e) {
+                if (e instanceof mongodb_1.MongoAPIError) {
+                    console.log(e.message);
+                }
+                return {
+                    result: false
+                };
+            }
         });
     }
 }
 exports.MongodbManagerClass = MongodbManagerClass;
+/**
+* getMongoDBClient
+*/
 function getMongoDBClient(db) {
     return __awaiter(this, void 0, void 0, function* () {
         const mongo = new MongodbManagerClass(db);

@@ -1,6 +1,6 @@
 import { MongodbManagerClass } from "./client"
 
-const mongo = new MongodbManagerClass('fxbot')
+const mongo = new MongodbManagerClass('test')
 
 const sampleset = async ()=> {
     await mongo.insert('sample', {abcde: 1234})
