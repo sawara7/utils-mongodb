@@ -9,7 +9,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getMongoDBClient = exports.MongodbManagerClass = void 0;
+exports.MongodbManagerClass = void 0;
+exports.getMongoDBClient = getMongoDBClient;
 const mongodb_1 = require("mongodb");
 class MongodbManagerClass {
     /**
@@ -171,8 +172,8 @@ class MongodbManagerClass {
     /**
      * find
      */
-    find(collection, filter = {}) {
-        return __awaiter(this, void 0, void 0, function* () {
+    find(collection_1) {
+        return __awaiter(this, arguments, void 0, function* (collection, filter = {}) {
             const result = [];
             try {
                 const res = yield this.client.db(this.dbName).collection(collection).find(filter).toArray();
@@ -253,4 +254,3 @@ function getMongoDBClient(db) {
         return mongo;
     });
 }
-exports.getMongoDBClient = getMongoDBClient;

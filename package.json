@@ -3,19 +3,19 @@
   "version": "0.0.2",
   "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "install-rimraf": "npm install --save-dev rimraf",
-    "cleanup": "rimraf package-lock.json && rimraf dist && rimraf node_modules",
-    "build": "npm run install-rimraf && npm run cleanup && npm install && tsc",
+    "rmDist": "node -e 'fs.rmSync(`dist`, {recursive:true, force:true})'",
+    "rmNodeModules": "node -e 'fs.rmSync(`node_modules`, {recursive:true, force:true})'",
+    "rmPackageLock": "node -e 'fs.rmSync(`package-lock.json`, {recursive:true, force:true})'",
+    "cleanup": "npm run rmDist && npm run rmNodeModules && npm run rmPackageLock",
+    "build": "npm run cleanup && npm install && tsc",
     "tsc": "tsc"
   },
   "author": "sawara7",
   "license": "MIT",
   "bundleDependencies": [],
   "devDependencies": {
-    "@types/node": "^20.8.3",
-    "rimraf": "^5.0.5",
-    "typescript": "^5.2.2"
+    "typescript": "^5.5.3",
+    "@types/node": "^20.14.11"
   },
   "dependencies": {
     "mongodb": "^6.1.0"
