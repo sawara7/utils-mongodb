@@ -21,6 +21,10 @@ export class MongodbManagerClass {
         this.client.addListener
     }
 
+    outputErrorLog(msg: string): string {
+        return "[utils-mongodb]" + msg
+    }
+
     /**
      * connect
      */
@@ -31,7 +35,7 @@ export class MongodbManagerClass {
             res = true
         } catch(e) {
             if (e instanceof Error) {
-                console.log(e.message)
+                this.outputErrorLog(e.message)
             }
             res = false
         }
@@ -47,7 +51,7 @@ export class MongodbManagerClass {
             await this.client.close()
         } catch(e) {
             if (e instanceof Error) {
-                console.log(e.message)
+                this.outputErrorLog(e.message)
             }
             res = false
         }
@@ -66,7 +70,7 @@ export class MongodbManagerClass {
             }
         } catch(e) {
             if (e instanceof MongoAPIError) {
-                console.log(e.message)
+                this.outputErrorLog(e.message)
             }
             return {
                 result: false
@@ -86,7 +90,7 @@ export class MongodbManagerClass {
             }
         } catch(e) {
             if (e instanceof MongoAPIError) {
-                console.log(e.message)
+                this.outputErrorLog(e.message)
             }
             return {
                 result: false
@@ -106,7 +110,7 @@ export class MongodbManagerClass {
             }
         } catch(e) {
             if (e instanceof MongoAPIError) {
-                console.log(e.message)
+                this.outputErrorLog(e.message)
             }
             return {
                 result: false
@@ -126,7 +130,7 @@ export class MongodbManagerClass {
             }
         } catch(e) {
             if (e instanceof MongoAPIError) {
-                console.log(e.message)
+                this.outputErrorLog(e.message)
             }
             return {
                 result: false
@@ -146,7 +150,7 @@ export class MongodbManagerClass {
             }
         } catch(e) {
             if (e instanceof MongoAPIError) {
-                console.log(e.message)
+                this.outputErrorLog(e.message)
             }
             return {
                 result: false
@@ -170,7 +174,7 @@ export class MongodbManagerClass {
             }
         } catch(e) {
             if (e instanceof MongoAPIError) {
-                console.log(e.message)
+                this.outputErrorLog(e.message)
             }
             return {
                 result: false
@@ -210,7 +214,7 @@ export class MongodbManagerClass {
             }
         } catch(e) {
             if (e instanceof MongoAPIError) {
-                console.log(e.message)
+                this.outputErrorLog(e.message)
             }
             return {
                 result: false

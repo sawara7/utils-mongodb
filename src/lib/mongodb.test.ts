@@ -1,14 +1,24 @@
 import { MongodbManagerClass } from "./client"
 
-const mongo = new MongodbManagerClass('test')
+const mongo = new MongodbManagerClass('ticker_collection')
 
 const sampleset = async ()=> {
-    await mongo.insert('sample', {abcde: 1234})
-    await mongo.update('sample', {abcde: 1234}, {abcde: 1})
+    const d = new Date()
+    const latest = d.getTime()
+    d.setMinutes(d.getMinutes() - 30)
+    const last5min = d.getTime()
+    console.log(last5min)
+    const result = await mongo.find("ticker/BTCUSDT", {
+        "timeStamp": {
+            $gt: last5min
+            ,$lt: latest
+        }
+    })
+    console.log(result.data)
 }
 
 (async()=>{
     await mongo.connect()
     await sampleset()
-    console.log(await mongo.find('sample'))
+    // console.log(await mongo.find('testtest'))
 })()
