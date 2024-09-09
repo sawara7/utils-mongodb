@@ -143,7 +143,7 @@ export class MongodbManagerClass {
      */
     async upsert(collection: string, filter: mongoDocumentType, data: mongoDocumentType): Promise<mongoResult<boolean>> {
         try {
-            const res = await this.client.db(this.dbName).collection(collection).updateOne(filter, data, {upsert: true})
+            const res = await this.client.db(this.dbName).collection(collection).updateOne(filter, {$set:data}, {upsert: true})
             return {
                 result: true,
                 data: res.acknowledged

@@ -22,6 +22,9 @@ class MongodbManagerClass {
         this.client = new mongodb_1.MongoClient(this.url);
         this.client.addListener;
     }
+    outputErrorLog(msg) {
+        return "[utils-mongodb]" + msg;
+    }
     /**
      * connect
      */
@@ -34,7 +37,7 @@ class MongodbManagerClass {
             }
             catch (e) {
                 if (e instanceof Error) {
-                    console.log(e.message);
+                    this.outputErrorLog(e.message);
                 }
                 res = false;
             }
@@ -52,7 +55,7 @@ class MongodbManagerClass {
             }
             catch (e) {
                 if (e instanceof Error) {
-                    console.log(e.message);
+                    this.outputErrorLog(e.message);
                 }
                 res = false;
             }
@@ -73,7 +76,7 @@ class MongodbManagerClass {
             }
             catch (e) {
                 if (e instanceof mongodb_1.MongoAPIError) {
-                    console.log(e.message);
+                    this.outputErrorLog(e.message);
                 }
                 return {
                     result: false
@@ -95,7 +98,7 @@ class MongodbManagerClass {
             }
             catch (e) {
                 if (e instanceof mongodb_1.MongoAPIError) {
-                    console.log(e.message);
+                    this.outputErrorLog(e.message);
                 }
                 return {
                     result: false
@@ -117,7 +120,7 @@ class MongodbManagerClass {
             }
             catch (e) {
                 if (e instanceof mongodb_1.MongoAPIError) {
-                    console.log(e.message);
+                    this.outputErrorLog(e.message);
                 }
                 return {
                     result: false
@@ -139,7 +142,7 @@ class MongodbManagerClass {
             }
             catch (e) {
                 if (e instanceof mongodb_1.MongoAPIError) {
-                    console.log(e.message);
+                    this.outputErrorLog(e.message);
                 }
                 return {
                     result: false
@@ -153,7 +156,7 @@ class MongodbManagerClass {
     upsert(collection, filter, data) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const res = yield this.client.db(this.dbName).collection(collection).updateOne(filter, data, { upsert: true });
+                const res = yield this.client.db(this.dbName).collection(collection).updateOne(filter, { $set: data }, { upsert: true });
                 return {
                     result: true,
                     data: res.acknowledged
@@ -161,7 +164,7 @@ class MongodbManagerClass {
             }
             catch (e) {
                 if (e instanceof mongodb_1.MongoAPIError) {
-                    console.log(e.message);
+                    this.outputErrorLog(e.message);
                 }
                 return {
                     result: false
@@ -187,7 +190,7 @@ class MongodbManagerClass {
             }
             catch (e) {
                 if (e instanceof mongodb_1.MongoAPIError) {
-                    console.log(e.message);
+                    this.outputErrorLog(e.message);
                 }
                 return {
                     result: false
@@ -234,7 +237,7 @@ class MongodbManagerClass {
             }
             catch (e) {
                 if (e instanceof mongodb_1.MongoAPIError) {
-                    console.log(e.message);
+                    this.outputErrorLog(e.message);
                 }
                 return {
                     result: false
