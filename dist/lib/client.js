@@ -20,7 +20,7 @@ class MongodbManagerClass {
         this.dbName = dbName;
         this.url = url;
         this.client = new mongodb_1.MongoClient(this.url);
-        this.client.addListener;
+        // this.client.addListener
     }
     outputErrorLog(method, msg) {
         const m = "[utils-mongodb]" + method + ',' + msg;

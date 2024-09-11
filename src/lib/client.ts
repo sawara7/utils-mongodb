@@ -17,8 +17,8 @@ export class MongodbManagerClass {
      * constructor
      */
     constructor(private dbName: string, private url: string = "mongodb://localhost:27017/"){
-        this.client = new MongoClient(this.url)
-        this.client.addListener
+        this.client = new MongoClient(this.url);
+        // this.client.addListener
     }
 
     outputErrorLog(method: string, msg: string): string {

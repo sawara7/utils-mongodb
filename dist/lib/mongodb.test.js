@@ -26,7 +26,7 @@ const sampleset = () => __awaiter(void 0, void 0, void 0, function* () {
     console.log(result.data);
 });
 (() => __awaiter(void 0, void 0, void 0, function* () {
-    yield mongo.connect();
+    console.log(yield mongo.connect());
     yield sampleset();
     // console.log(await mongo.find('testtest'))
 }))();

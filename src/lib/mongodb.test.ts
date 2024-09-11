@@ -18,7 +18,7 @@ const sampleset = async ()=> {
 }
 
 (async()=>{
-    await mongo.connect()
+    console.log(await mongo.connect())
     await sampleset()
     // console.log(await mongo.find('testtest'))
 })()
