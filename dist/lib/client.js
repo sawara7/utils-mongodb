@@ -23,7 +23,9 @@ class MongodbManagerClass {
         this.client.addListener;
     }
     outputErrorLog(msg) {
-        return "[utils-mongodb]" + msg;
+        const m = "[utils-mongodb]" + msg;
+        console.log(m);
+        return m;
     }
     /**
      * connect

@@ -22,7 +22,9 @@ export class MongodbManagerClass {
     }
 
     outputErrorLog(msg: string): string {
-        return "[utils-mongodb]" + msg
+        const m = "[utils-mongodb]" + msg
+        console.log(m)
+        return m
     }
 
     /**
