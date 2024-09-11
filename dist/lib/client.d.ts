@@ -12,7 +12,7 @@ export declare class MongodbManagerClass {
      * constructor
      */
     constructor(dbName: string, url?: string);
-    outputErrorLog(msg: string): string;
+    outputErrorLog(method: string, msg: string): string;
     /**
      * connect
      */

@@ -22,8 +22,8 @@ class MongodbManagerClass {
         this.client = new mongodb_1.MongoClient(this.url);
         this.client.addListener;
     }
-    outputErrorLog(msg) {
-        const m = "[utils-mongodb]" + msg;
+    outputErrorLog(method, msg) {
+        const m = "[utils-mongodb]" + method + ',' + msg;
         console.log(m);
         return m;
     }
@@ -39,7 +39,7 @@ class MongodbManagerClass {
             }
             catch (e) {
                 if (e instanceof Error) {
-                    this.outputErrorLog(e.message);
+                    this.outputErrorLog('connect', e.message);
                 }
                 res = false;
             }
@@ -57,7 +57,7 @@ class MongodbManagerClass {
             }
             catch (e) {
                 if (e instanceof Error) {
-                    this.outputErrorLog(e.message);
+                    this.outputErrorLog('close', e.message);
                 }
                 res = false;
             }
@@ -78,7 +78,7 @@ class MongodbManagerClass {
             }
             catch (e) {
                 if (e instanceof mongodb_1.MongoAPIError) {
-                    this.outputErrorLog(e.message);
+                    this.outputErrorLog('insert', e.message);
                 }
                 return {
                     result: false
@@ -100,7 +100,7 @@ class MongodbManagerClass {
             }
             catch (e) {
                 if (e instanceof mongodb_1.MongoAPIError) {
-                    this.outputErrorLog(e.message);
+                    this.outputErrorLog('insertAny', e.message);
                 }
                 return {
                     result: false
@@ -122,7 +122,7 @@ class MongodbManagerClass {
             }
             catch (e) {
                 if (e instanceof mongodb_1.MongoAPIError) {
-                    this.outputErrorLog(e.message);
+                    this.outputErrorLog('insertBulk', e.message);
                 }
                 return {
                     result: false
@@ -144,7 +144,7 @@ class MongodbManagerClass {
             }
             catch (e) {
                 if (e instanceof mongodb_1.MongoAPIError) {
-                    this.outputErrorLog(e.message);
+                    this.outputErrorLog('update', e.message);
                 }
                 return {
                     result: false
@@ -166,7 +166,7 @@ class MongodbManagerClass {
             }
             catch (e) {
                 if (e instanceof mongodb_1.MongoAPIError) {
-                    this.outputErrorLog(e.message);
+                    this.outputErrorLog('upsert', e.message);
                 }
                 return {
                     result: false
@@ -192,7 +192,7 @@ class MongodbManagerClass {
             }
             catch (e) {
                 if (e instanceof mongodb_1.MongoAPIError) {
-                    this.outputErrorLog(e.message);
+                    this.outputErrorLog('find', e.message);
                 }
                 return {
                     result: false
@@ -239,7 +239,7 @@ class MongodbManagerClass {
             }
             catch (e) {
                 if (e instanceof mongodb_1.MongoAPIError) {
-                    this.outputErrorLog(e.message);
+                    this.outputErrorLog('isExistDocument', e.message);
                 }
                 return {
                     result: false

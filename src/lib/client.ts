@@ -21,8 +21,8 @@ export class MongodbManagerClass {
         this.client.addListener
     }
 
-    outputErrorLog(msg: string): string {
-        const m = "[utils-mongodb]" + msg
+    outputErrorLog(method: string, msg: string): string {
+        const m = "[utils-mongodb]" + method + ',' + msg
         console.log(m)
         return m
     }
@@ -37,7 +37,7 @@ export class MongodbManagerClass {
             res = true
         } catch(e) {
             if (e instanceof Error) {
-                this.outputErrorLog(e.message)
+                this.outputErrorLog('connect', e.message)
             }
             res = false
         }
@@ -53,7 +53,7 @@ export class MongodbManagerClass {
             await this.client.close()
         } catch(e) {
             if (e instanceof Error) {
-                this.outputErrorLog(e.message)
+                this.outputErrorLog('close', e.message)
             }
             res = false
         }
@@ -72,7 +72,7 @@ export class MongodbManagerClass {
             }
         } catch(e) {
             if (e instanceof MongoAPIError) {
-                this.outputErrorLog(e.message)
+                this.outputErrorLog('insert',e.message)
             }
             return {
                 result: false
@@ -92,7 +92,7 @@ export class MongodbManagerClass {
             }
         } catch(e) {
             if (e instanceof MongoAPIError) {
-                this.outputErrorLog(e.message)
+                this.outputErrorLog('insertAny', e.message)
             }
             return {
                 result: false
@@ -112,7 +112,7 @@ export class MongodbManagerClass {
             }
         } catch(e) {
             if (e instanceof MongoAPIError) {
-                this.outputErrorLog(e.message)
+                this.outputErrorLog('insertBulk', e.message)
             }
             return {
                 result: false
@@ -132,7 +132,7 @@ export class MongodbManagerClass {
             }
         } catch(e) {
             if (e instanceof MongoAPIError) {
-                this.outputErrorLog(e.message)
+                this.outputErrorLog('update', e.message)
             }
             return {
                 result: false
@@ -152,7 +152,7 @@ export class MongodbManagerClass {
             }
         } catch(e) {
             if (e instanceof MongoAPIError) {
-                this.outputErrorLog(e.message)
+                this.outputErrorLog('upsert', e.message)
             }
             return {
                 result: false
@@ -176,7 +176,7 @@ export class MongodbManagerClass {
             }
         } catch(e) {
             if (e instanceof MongoAPIError) {
-                this.outputErrorLog(e.message)
+                this.outputErrorLog('find', e.message)
             }
             return {
                 result: false
@@ -216,7 +216,7 @@ export class MongodbManagerClass {
             }
         } catch(e) {
             if (e instanceof MongoAPIError) {
-                this.outputErrorLog(e.message)
+                this.outputErrorLog('isExistDocument', e.message)
             }
             return {
                 result: false
